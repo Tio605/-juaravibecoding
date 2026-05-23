@@ -3,165 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BriefMate — AI Brief Generator</title>
+    <title>BrieFix — AI Brief Generator</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap" rel="stylesheet">
+    <!-- docx export -->
+    <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
+    <!-- pdf export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        /* Style tambahan agar hasil konversi Markdown terlihat rapi */
-        .markdown-content h1 { font-size: 1.5rem; font-weight: 700; color: #ffffff; margin-top: 1rem; margin-bottom: 0.5rem; border-bottom: 1px solid #1e293b; padding-bottom: 0.25rem; }
+        .markdown-content h1 { font-size: 1.5rem; font-weight: 700; color: #ffffff; margin-top: 1rem; margin-bottom: 0.5rem; border-bottom: 1px solid #2a2a2a; padding-bottom: 0.25rem; }
         .markdown-content h2 { font-size: 1.25rem; font-weight: 600; color: #ffffff; margin-top: 1rem; margin-bottom: 0.5rem; }
-        .markdown-content h3 { font-size: 1.1rem; font-weight: 600; color: #818cf8; margin-top: 0.75rem; margin-bottom: 0.25rem; }
-        .markdown-content ul { list-style-type: disc; margin-left: 1.25rem; margin-bottom: 0.75rem; color: #cbd5e1; }
+        .markdown-content h3 { font-size: 1.1rem; font-weight: 600; color: #d4d4d4; margin-top: 0.75rem; margin-bottom: 0.25rem; }
+        .markdown-content ul { list-style-type: disc; margin-left: 1.25rem; margin-bottom: 0.75rem; color: #a3a3a3; }
         .markdown-content li { margin-bottom: 0.25rem; }
-        .markdown-content p { margin-bottom: 0.75rem; color: #cbd5e1; }
-        .markdown-content strong { color: #f8fafc; font-weight: 600; }
+        .markdown-content p { margin-bottom: 0.75rem; color: #a3a3a3; }
+        .markdown-content strong { color: #ffffff; font-weight: 600; }
     </style>
 </head>
-<body class="bg-[#0B0F19] text-[#E2E8F0] min-h-screen antialiased selection:bg-indigo-500 selection:text-white">
+<body class="bg-[#0a0a0a] text-[#e5e5e5] min-h-screen antialiased selection:bg-white selection:text-black">
 
     <section id="home" class="relative min-h-screen flex flex-col justify-between overflow-hidden">
-        <div class="absolute top-0 left-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute bottom-10 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-white/3 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-10 right-1/4 w-96 h-96 bg-white/2 rounded-full blur-3xl pointer-events-none"></div>
 
         <nav class="max-w-6xl w-full mx-auto px-6 py-6 flex justify-between items-center relative z-10">
             <div class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-                    <i class="fa-solid fa-wand-magic-sparkles text-white text-sm"></i>
+                <div class="w-9 h-9 rounded-xl bg-white flex items-center justify-center shadow-lg shadow-white/10">
+                    <i class="fa-solid fa-wand-magic-sparkles text-black text-sm"></i>
                 </div>
-                <span class="text-xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-tight">BriefMate</span>
+                <span class="text-xl font-bold text-white tracking-tight">BrieFix</span>
             </div>
-            <div class="flex items-center gap-6 text-sm font-medium text-slate-400">
-                <a href="#features" class="hover:text-slate-200 transition">Fitur</a>
-                <a href="#generator" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-xs font-semibold transition active:scale-95 shadow-lg shadow-indigo-600/20 flex items-center gap-1.5">
+            <div class="flex items-center gap-6 text-sm font-medium text-neutral-400">
+                <a href="#features" class="hover:text-white transition">Fitur</a>
+                <a href="#generator" class="bg-white hover:bg-neutral-200 text-black px-4 py-2 rounded-lg text-xs font-semibold transition active:scale-95 flex items-center gap-1.5">
                     Coba Sekarang <i class="fa-solid fa-arrow-right text-[10px]"></i>
                 </a>
             </div>
         </nav>
 
         <div class="max-w-4xl mx-auto text-center px-6 py-20 relative z-10 my-auto">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-6">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-white border border-white/20 mb-6">
                 <i class="fa-solid fa-trophy text-[10px]"></i> #JuaraVibeCoding 2026 Submission
             </span>
             <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
                 Ubah Ide Mentah Menjadi <br>
-                <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Brief Matang dalam 5 Detik</span>
+                <span class="text-white">Brief Matang dalam 5 Detik</span>
             </h1>
-            <p class="mt-6 text-base md:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            <p class="mt-6 text-base md:text-lg text-neutral-400 max-w-2xl mx-auto leading-relaxed">
                 Satu-satunya platform AI lokal dwibahasa yang dirancang khusus untuk membantu 
-                <span class="text-indigo-400 font-medium">Freelancer Desain</span> menyusun creative brief dan <span class="text-purple-400 font-medium">Content Creator</span> meracik strategi konten terstruktur.
+                <span class="text-white font-medium">Freelancer Desain</span> menyusun creative brief dan <span class="text-neutral-300 font-medium">Content Creator</span> meracik strategi konten terstruktur.
             </p>
             <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="#generator" class="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium py-3 px-8 rounded-xl text-sm transition shadow-lg shadow-indigo-500/20 active:scale-[0.98] flex items-center justify-center gap-2">
-                    Mulai Buat Brief <i class="fa-solid fa-bolt text-xs text-amber-300"></i>
+                <a href="#generator" class="w-full sm:w-auto bg-white hover:bg-neutral-200 text-black font-medium py-3 px-8 rounded-xl text-sm transition active:scale-[0.98] flex items-center justify-center gap-2">
+                    Mulai Buat Brief <i class="fa-solid fa-bolt text-xs text-neutral-600"></i>
                 </a>
             </div>
         </div>
 
-        <div id="features" class="border-t border-slate-900 bg-slate-950/40 backdrop-blur-md py-8">
+        <div id="features" class="border-t border-neutral-900 bg-black/40 backdrop-blur-md py-8">
             <div class="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
                 <div class="space-y-1.5">
                     <h3 class="text-white font-semibold flex items-center justify-center md:justify-start gap-2 text-sm">
-                        <i class="fa-solid fa-palette text-indigo-400"></i> Design Brief Mode
+                        <i class="fa-solid fa-palette text-white"></i> Design Brief Mode
                     </h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">Hasilkan arahan visual, palet warna, saran mood board, dan pertanyaan klarifikasi klien otomatis.</p>
+                    <p class="text-xs text-neutral-500 leading-relaxed">Hasilkan arahan visual, palet warna, saran mood board, dan pertanyaan klarifikasi klien otomatis.</p>
                 </div>
                 <div class="space-y-1.5">
                     <h3 class="text-white font-semibold flex items-center justify-center md:justify-start gap-2 text-sm">
-                        <i class="fa-solid fa-clapperboard text-purple-400"></i> Content Brief Mode
+                        <i class="fa-solid fa-clapperboard text-neutral-300"></i> Content Brief Mode
                     </h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">Bikin hook pembuka, outline script video TikTok/YouTube, hashtag, hingga template draf media kit.</p>
+                    <p class="text-xs text-neutral-500 leading-relaxed">Bikin hook pembuka, outline script video TikTok/YouTube, hashtag, hingga template draf media kit.</p>
                 </div>
                 <div class="space-y-1.5">
                     <h3 class="text-white font-semibold flex items-center justify-center md:justify-start gap-2 text-sm">
-                        <i class="fa-solid fa-earth-americas text-pink-400"></i> Sistem Dwibahasa
+                        <i class="fa-solid fa-earth-americas text-neutral-400"></i> Sistem Dwibahasa
                     </h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">Ganti output secara instan antara Bahasa Indonesia santai atau Bahasa Inggris profesional untuk klien asing.</p>
+                    <p class="text-xs text-neutral-500 leading-relaxed">Ganti output secara instan antara Bahasa Indonesia santai atau Bahasa Inggris profesional untuk klien asing.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="generator" class="min-h-screen border-t border-slate-900 py-16 bg-[#090C15] relative">
+    <section id="generator" class="min-h-screen border-t border-neutral-900 py-16 bg-[#0a0a0a] relative">
         <div class="max-w-5xl mx-auto px-4">
             
-            <header class="flex flex-col md:flex-row justify-between items-center border-b border-slate-800 pb-6 mb-8 gap-4">
+            <header class="flex flex-col md:flex-row justify-between items-center border-b border-neutral-800 pb-6 mb-8 gap-4">
                 <div>
                     <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-sliders text-indigo-400 text-lg"></i>
-                        <h2 class="text-xl font-bold text-white">BriefMate Workspace</h2>
+                        <i class="fa-solid fa-sliders text-white text-lg"></i>
+                        <h2 class="text-xl font-bold text-white">BrieFix Workspace</h2>
                     </div>
-                    <p class="text-xs text-slate-400 mt-1">Gunakan kekuatan Gemini 3.5 Flash untuk merancang masa depan karyamu.</p>
+                    <p class="text-xs text-neutral-500 mt-1">Gunakan kekuatan Gemini 3.5 Flash untuk merancang masa depan karyamu.</p>
                 </div>
                 
                 <div class="w-full md:w-auto flex items-center gap-2">
-                    <input type="password" id="apiKey" value="AIzaSyDJ-rW4nBIiTog9a0-QAYjrRR_vgqJrEow" placeholder="API Key Terpasang Otomatis" 
-                           class="w-full md:w-64 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-indigo-500 transition text-slate-400 text-center">
+                    <input type="password" id="apiKey" value="AIzaSyCeB0xlGvotoG8jXAp-VMgaJkrB2nOUCU4" placeholder="API Key Terpasang Otomatis" 
+                           class="w-full md:w-64 bg-neutral-950 border border-neutral-800 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-white transition text-neutral-400 text-center">
                 </div>
             </header>
 
             <main class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 <div class="lg:col-span-5 space-y-6">
-                    <div class="bg-slate-900/50 border border-slate-800/80 rounded-xl p-4 space-y-4">
+                    <div class="bg-neutral-900/50 border border-neutral-800 rounded-xl p-4 space-y-4">
                         <div>
-                            <label class="text-[11px] uppercase tracking-wider text-slate-400 font-medium block mb-2">Bahasa Output</label>
-                            <div class="grid grid-cols-2 gap-2 bg-slate-950 p-1 rounded-lg border border-slate-900">
-                                <button onclick="setLanguage('id')" id="langId" class="py-1.5 text-xs font-medium rounded-md transition bg-indigo-600 text-white flex items-center justify-center gap-1.5">
+                            <label class="text-[11px] uppercase tracking-wider text-neutral-400 font-medium block mb-2">Bahasa Output</label>
+                            <div class="grid grid-cols-2 gap-2 bg-neutral-950 p-1 rounded-lg border border-neutral-900">
+                                <button onclick="setLanguage('id')" id="langId" class="py-1.5 text-xs font-medium rounded-md transition bg-white text-black flex items-center justify-center gap-1.5">
                                     <i class="fa-solid fa-language text-xs"></i> Indonesia
                                 </button>
-                                <button onclick="setLanguage('en')" id="langEn" class="py-1.5 text-xs font-medium rounded-md transition text-slate-400 hover:text-slate-200 flex items-center justify-center gap-1.5">
+                                <button onclick="setLanguage('en')" id="langEn" class="py-1.5 text-xs font-medium rounded-md transition text-neutral-400 hover:text-white flex items-center justify-center gap-1.5">
                                     <i class="fa-solid fa-globe text-xs"></i> English
                                 </button>
                             </div>
                         </div>
 
                         <div>
-                            <label class="text-[11px] uppercase tracking-wider text-slate-400 font-medium block mb-2">Pilih Mode Kerja</label>
-                            <div class="grid grid-cols-2 gap-2 bg-slate-950 p-1 rounded-lg border border-slate-900">
-                                <button onclick="switchMode('design')" id="btnModeDesign" class="py-2 text-xs font-medium rounded-md transition bg-slate-800 text-white flex items-center justify-center gap-1.5">
+                            <label class="text-[11px] uppercase tracking-wider text-neutral-400 font-medium block mb-2">Pilih Mode Kerja</label>
+                            <div class="grid grid-cols-2 gap-2 bg-neutral-950 p-1 rounded-lg border border-neutral-900">
+                                <button onclick="switchMode('design')" id="btnModeDesign" class="py-2 text-xs font-medium rounded-md transition bg-neutral-700 text-white flex items-center justify-center gap-1.5">
                                     <i class="fa-solid fa-pen-nib"></i> Design Brief
                                 </button>
-                                <button onclick="switchMode('content')" id="btnModeContent" class="py-2 text-xs font-medium rounded-md transition text-slate-400 hover:text-slate-200 flex items-center justify-center gap-1.5">
+                                <button onclick="switchMode('content')" id="btnModeContent" class="py-2 text-xs font-medium rounded-md transition text-neutral-400 hover:text-white flex items-center justify-center gap-1.5">
                                     <i class="fa-solid fa-video"></i> Content Brief
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-slate-900/50 border border-slate-800/80 rounded-xl p-5 shadow-xl">
+                    <div class="bg-neutral-900/50 border border-neutral-800 rounded-xl p-5 shadow-xl">
                         <div id="formDesign" class="space-y-4">
                             <div>
-                                <label class="text-xs font-medium text-slate-300 block mb-1.5">Nama Proyek</label>
-                                <input type="text" id="dName" placeholder="Contoh: Logo Kedai Kopi Kulo" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition text-slate-200">
+                                <label class="text-xs font-medium text-neutral-300 block mb-1.5">Nama Proyek</label>
+                                <input type="text" id="dName" placeholder="Contoh: Logo Kedai Kopi Kulo" class="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-white transition text-neutral-200">
                             </div>
                             <div>
-                                <label class="text-xs font-medium text-slate-300 block mb-1.5">Jenis Desain</label>
-                                <input type="text" id="dType" placeholder="Contoh: Logo, UI/UX Web" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition text-slate-200">
+                                <label class="text-xs font-medium text-neutral-300 block mb-1.5">Jenis Desain</label>
+                                <input type="text" id="dType" placeholder="Contoh: Logo, UI/UX Web" class="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-white transition text-neutral-200">
                             </div>
                             <div>
-                                <label class="text-xs font-medium text-slate-300 block mb-1.5">Target Audiens</label>
-                                <input type="text" id="dAudience" placeholder="Contoh: Gen-Z, Pekerja kantoran" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition text-slate-200">
+                                <label class="text-xs font-medium text-neutral-300 block mb-1.5">Target Audiens</label>
+                                <input type="text" id="dAudience" placeholder="Contoh: Gen-Z, Pekerja kantoran" class="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-white transition text-neutral-200">
                             </div>
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label class="text-xs font-medium text-slate-300 block mb-1.5">Tone / Vibe</label>
-                                    <input type="text" id="dTone" placeholder="Contoh: Minimalis" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition text-slate-200">
+                                    <label class="text-xs font-medium text-neutral-300 block mb-1.5">Tone / Vibe</label>
+                                    <input type="text" id="dTone" placeholder="Contoh: Minimalis" class="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-white transition text-neutral-200">
                                 </div>
                                 <div>
-                                    <label class="text-xs font-medium text-slate-300 block mb-1.5">Deadline</label>
-                                    <input type="text" id="dDeadline" placeholder="Contoh: 2 Minggu" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition text-slate-200">
+                                    <label class="text-xs font-medium text-neutral-300 block mb-1.5">Deadline</label>
+                                    <input type="text" id="dDeadline" placeholder="Contoh: 2 Minggu" class="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-white transition text-neutral-200">
                                 </div>
                             </div>
                         </div>
 
                         <div id="formContent" class="space-y-4 hidden">
                             <div>
-                                <label class="text-xs font-medium text-slate-300 block mb-1.5">Pilih Platform</label>
-                                <select id="cPlatform" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition text-slate-300">
+                                <label class="text-xs font-medium text-neutral-300 block mb-1.5">Pilih Platform</label>
+                                <select id="cPlatform" class="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-white transition text-neutral-300">
                                     <option value="TikTok">TikTok</option>
                                     <option value="Instagram">Instagram</option>
                                     <option value="YouTube">YouTube</option>
@@ -169,65 +172,73 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="text-xs font-medium text-slate-300 block mb-1.5">Topik Konten</label>
-                                <input type="text" id="cTopic" placeholder="Contoh: Tutorial Figma" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition text-slate-200">
+                                <label class="text-xs font-medium text-neutral-300 block mb-1.5">Topik Konten</label>
+                                <input type="text" id="cTopic" placeholder="Contoh: Tutorial Figma" class="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-white transition text-neutral-200">
                             </div>
                             <div>
-                                <label class="text-xs font-medium text-slate-300 block mb-1.5">Target Audiens</label>
-                                <input type="text" id="cAudience" placeholder="Contoh: Mahasiswa DKV" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition text-slate-200">
+                                <label class="text-xs font-medium text-neutral-300 block mb-1.5">Target Audiens</label>
+                                <input type="text" id="cAudience" placeholder="Contoh: Mahasiswa DKV" class="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-white transition text-neutral-200">
                             </div>
                             <div>
-                                <label class="text-xs font-medium text-slate-300 block mb-1.5">Tone & Tujuan Konten</label>
-                                <input type="text" id="cTone" placeholder="Contoh: Edukatif & Santai" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition text-slate-200">
+                                <label class="text-xs font-medium text-neutral-300 block mb-1.5">Tone & Tujuan Konten</label>
+                                <input type="text" id="cTone" placeholder="Contoh: Edukatif & Santai" class="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-white transition text-neutral-200">
                             </div>
                             <div>
-                                <label class="text-xs font-medium text-slate-300 block mb-1.5">Call to Action (CTA)</label>
-                                <input type="text" id="cCta" placeholder="Contoh: Klik link di bio" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition text-slate-200">
+                                <label class="text-xs font-medium text-neutral-300 block mb-1.5">Call to Action (CTA)</label>
+                                <input type="text" id="cCta" placeholder="Contoh: Klik link di bio" class="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-white transition text-neutral-200">
                             </div>
                         </div>
 
-                        <button onclick="generateBrief()" class="w-full mt-6 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition shadow-lg shadow-indigo-500/10 active:scale-[0.98] flex items-center justify-center gap-2">
+                        <button onclick="generateBrief()" class="w-full mt-6 bg-white hover:bg-neutral-200 text-black font-medium py-2.5 px-4 rounded-lg text-sm transition active:scale-[0.98] flex items-center justify-center gap-2">
                             <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Brief
                         </button>
                     </div>
                 </div>
 
                 <div class="lg:col-span-7 flex flex-col space-y-6">
-                    <div class="bg-slate-900/40 border border-slate-800/80 rounded-xl p-5 flex flex-col relative min-h-[380px]">
-                        <div class="flex justify-between items-center border-b border-slate-800/60 pb-3 mb-4">
+                    <div class="bg-neutral-900/40 border border-neutral-800 rounded-xl p-5 flex flex-col relative min-h-[380px]">
+                        <div class="flex justify-between items-center border-b border-neutral-800 pb-3 mb-4">
                             <div class="flex items-center gap-2">
                                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                                <span class="text-xs font-medium tracking-wide text-slate-400 uppercase flex items-center gap-1.5">
+                                <span class="text-xs font-medium tracking-wide text-neutral-400 uppercase flex items-center gap-1.5">
                                     <i class="fa-solid fa-square-poll-horizontal"></i> Brief Terbaru
                                 </span>
                             </div>
-                            <button onclick="copyOutput()" class="text-xs text-indigo-400 hover:text-indigo-300 font-medium transition flex items-center gap-1.5">
-                                <i class="fa-regular fa-copy"></i> Copy Text
-                            </button>
+                            <div class="flex items-center gap-3">
+                                <button onclick="exportPDF()" class="text-xs text-neutral-400 hover:text-white font-medium transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-file-pdf"></i> PDF
+                                </button>
+                                <button onclick="exportDOCX()" class="text-xs text-neutral-400 hover:text-white font-medium transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-file-word"></i> DOCX
+                                </button>
+                                <button onclick="copyOutput()" class="text-xs text-neutral-400 hover:text-white font-medium transition flex items-center gap-1.5">
+                                    <i class="fa-regular fa-copy"></i> Copy
+                                </button>
+                            </div>
                         </div>
 
-                        <div id="loading" class="hidden absolute inset-0 bg-[#0B0F19]/80 backdrop-blur-xs flex flex-col items-center justify-center rounded-xl z-10">
-                            <div class="w-8 h-8 border-3 border-indigo-500 border-t-transparent rounded-full animate-spin mb-3"></div>
-                            <p class="text-xs text-slate-400">Gemini 3.5 Flash sedang meracik brief...</p>
+                        <div id="loading" class="hidden absolute inset-0 bg-black/80 backdrop-blur-xs flex flex-col items-center justify-center rounded-xl z-10">
+                            <div class="w-8 h-8 border-3 border-white border-t-transparent rounded-full animate-spin mb-3"></div>
+                            <p class="text-xs text-neutral-400">Gemini 3.5 Flash sedang meracik brief...</p>
                         </div>
 
-                        <div id="outputContainer" class="markdown-content text-sm text-slate-300 leading-relaxed overflow-y-auto max-h-[400px] pr-2">
-                            <div class="text-slate-500 text-center py-20 italic">
+                        <div id="outputContainer" class="markdown-content text-sm text-neutral-300 leading-relaxed overflow-y-auto max-h-[400px] pr-2">
+                            <div class="text-neutral-600 text-center py-20 italic">
                                 Isi form di sebelah kiri lalu klik button untuk memunculkan brief otomatis.
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-slate-900/20 border border-slate-800/60 rounded-xl p-5">
-                        <div class="flex justify-between items-center border-b border-slate-800/40 pb-3 mb-4">
-                            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                                <i class="fa-solid fa-box-archive text-slate-500"></i> Riwayat Brief Tersimpan (History)
+                    <div class="bg-neutral-900/20 border border-neutral-800 rounded-xl p-5">
+                        <div class="flex justify-between items-center border-b border-neutral-800 pb-3 mb-4">
+                            <h3 class="text-xs font-semibold text-neutral-400 uppercase tracking-wider flex items-center gap-1.5">
+                                <i class="fa-solid fa-box-archive text-neutral-500"></i> Riwayat Brief Tersimpan (History)
                             </h3>
                             <button onclick="clearHistory()" class="text-[11px] text-red-400 hover:text-red-300 transition flex items-center gap-1">
                                 <i class="fa-solid fa-trash-can text-[10px]"></i> Hapus Semua
                             </button>
                         </div>
-                        <div id="historyContainer" class="space-y-3 max-h-[250px] overflow-y-auto pr-2 text-xs text-slate-500 italic">
+                        <div id="historyContainer" class="space-y-3 max-h-[250px] overflow-y-auto pr-2 text-xs text-neutral-500 italic">
                             Belum ada riwayat brief yang tersimpan.
                         </div>
                     </div>
@@ -251,13 +262,13 @@
             const fContent = document.getElementById('formContent');
 
             if (mode === 'design') {
-                bDesign.className = "py-2 text-xs font-medium rounded-md transition bg-slate-800 text-white flex items-center justify-center gap-1.5";
-                bContent.className = "py-2 text-xs font-medium rounded-md transition text-slate-400 hover:text-slate-200 flex items-center justify-center gap-1.5";
+                bDesign.className = "py-2 text-xs font-medium rounded-md transition bg-neutral-700 text-white flex items-center justify-center gap-1.5";
+                bContent.className = "py-2 text-xs font-medium rounded-md transition text-neutral-400 hover:text-white flex items-center justify-center gap-1.5";
                 fDesign.classList.remove('hidden');
                 fContent.classList.add('hidden');
             } else {
-                bContent.className = "py-2 text-xs font-medium rounded-md transition bg-slate-800 text-white flex items-center justify-center gap-1.5";
-                bDesign.className = "py-2 text-xs font-medium rounded-md transition text-slate-400 hover:text-slate-200 flex items-center justify-center gap-1.5";
+                bContent.className = "py-2 text-xs font-medium rounded-md transition bg-neutral-700 text-white flex items-center justify-center gap-1.5";
+                bDesign.className = "py-2 text-xs font-medium rounded-md transition text-neutral-400 hover:text-white flex items-center justify-center gap-1.5";
                 fContent.classList.remove('hidden');
                 fDesign.classList.add('hidden');
             }
@@ -268,11 +279,11 @@
             const lId = document.getElementById('langId');
             const lEn = document.getElementById('langEn');
             if (lang === 'id') {
-                lId.className = "py-1.5 text-xs font-medium rounded-md transition bg-indigo-600 text-white flex items-center justify-center gap-1.5";
-                lEn.className = "py-1.5 text-xs font-medium rounded-md transition text-slate-400 hover:text-slate-200 flex items-center justify-center gap-1.5";
+                lId.className = "py-1.5 text-xs font-medium rounded-md transition bg-white text-black flex items-center justify-center gap-1.5";
+                lEn.className = "py-1.5 text-xs font-medium rounded-md transition text-neutral-400 hover:text-white flex items-center justify-center gap-1.5";
             } else {
-                lEn.className = "py-1.5 text-xs font-medium rounded-md transition bg-indigo-600 text-white flex items-center justify-center gap-1.5";
-                lId.className = "py-1.5 text-xs font-medium rounded-md transition text-slate-400 hover:text-slate-200 flex items-center justify-center gap-1.5";
+                lEn.className = "py-1.5 text-xs font-medium rounded-md transition bg-white text-black flex items-center justify-center gap-1.5";
+                lId.className = "py-1.5 text-xs font-medium rounded-md transition text-neutral-400 hover:text-white flex items-center justify-center gap-1.5";
             }
         }
 
@@ -300,7 +311,7 @@
             }
 
             try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`, {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -339,6 +350,13 @@
             loadHistory();
         }
 
+        function deleteHistoryItem(id) {
+            let history = JSON.parse(localStorage.getItem('briefmate_history')) || [];
+            history = history.filter(x => x.id !== id);
+            localStorage.setItem('briefmate_history', JSON.stringify(history));
+            loadHistory();
+        }
+
         function loadHistory() {
             const historyContainer = document.getElementById('historyContainer');
             let history = JSON.parse(localStorage.getItem('briefmate_history')) || [];
@@ -349,13 +367,18 @@
             }
 
             historyContainer.innerHTML = history.map(item => `
-                <div class="bg-slate-900/60 border border-slate-800 p-3 rounded-lg flex justify-between items-center gap-4">
-                    <div>
-                        <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300 flex inline-flex items-center gap-1">${item.mode}</span>
-                        <span class="font-medium text-slate-200 ml-1">${item.title}</span>
-                        <span class="block text-[10px] text-slate-500 mt-0.5"><i class="fa-regular fa-calendar text-[9px]"></i> ${item.date}</span>
+                <div class="bg-neutral-900 border border-neutral-800 p-3 rounded-lg flex justify-between items-center gap-4">
+                    <div class="flex-1 min-w-0">
+                        <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-neutral-800 text-neutral-300 inline-flex items-center gap-1">${item.mode}</span>
+                        <span class="font-medium text-neutral-200 ml-1">${item.title}</span>
+                        <span class="block text-[10px] text-neutral-500 mt-0.5"><i class="fa-regular fa-calendar text-[9px]"></i> ${item.date}</span>
                     </div>
-                    <button onclick="viewHistoryItem(${item.id})" class="text-indigo-400 hover:underline shrink-0 flex items-center gap-1">Buka <i class="fa-solid fa-chevron-right text-[9px]"></i></button>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button onclick="viewHistoryItem(${item.id})" class="text-neutral-300 hover:text-white text-xs flex items-center gap-1">Buka <i class="fa-solid fa-chevron-right text-[9px]"></i></button>
+                        <button onclick="deleteHistoryItem(${item.id})" class="text-red-400 hover:text-red-300 transition" title="Hapus">
+                            <i class="fa-solid fa-trash-can text-[11px]"></i>
+                        </button>
+                    </div>
                 </div>
             `).join('');
         }
@@ -384,6 +407,35 @@
             }
             navigator.clipboard.writeText(rawOutputText);
             alert('Brief berhasil disalin!');
+        }
+        function exportPDF() {
+            if (!rawOutputText) { alert('Belum ada brief yang bisa diekspor!'); return; }
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const lines = doc.splitTextToSize(rawOutputText.replace(/[#*`]/g, ''), 180);
+            let y = 15;
+            doc.setFontSize(11);
+            lines.forEach(line => {
+                if (y > 280) { doc.addPage(); y = 15; }
+                doc.text(line, 15, y);
+                y += 6;
+            });
+            doc.save('brief.pdf');
+        }
+
+        async function exportDOCX() {
+            if (!rawOutputText) { alert('Belum ada brief yang bisa diekspor!'); return; }
+            const { Document, Packer, Paragraph, TextRun } = docx;
+            const paragraphs = rawOutputText.split('\n').map(line => {
+                const clean = line.replace(/[#*`]/g, '').trim();
+                return new Paragraph({ children: [new TextRun(clean)] });
+            });
+            const doc = new Document({ sections: [{ children: paragraphs }] });
+            const blob = await Packer.toBlob(doc);
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'brief.docx'; a.click();
+            URL.revokeObjectURL(url);
         }
     </script>
 </body>
